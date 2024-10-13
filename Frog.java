@@ -75,16 +75,16 @@ public class Frog extends JPanel implements ActionListener, KeyListener {
             x = 0;
         }
 
-        if (x > GameScreen.displayWidth - frogWidth + 1) {
-            x = GameScreen.displayWidth - frogWidth + 1;
+        if (x > GameScreen.DISPLAY_WIDTH - frogWidth + 1) {
+            x = GameScreen.DISPLAY_WIDTH - frogWidth + 1;
         }
 
         if (y < 0) {
             y = 0;
         }
 
-        if (y > GameScreen.displayHeight - frogHeight + 1) {
-            y = GameScreen.displayHeight - frogHeight + 1;
+        if (y > GameScreen.DISPLAY_HEIGHT - frogHeight + 1) {
+            y = GameScreen.DISPLAY_HEIGHT - frogHeight + 1;
         }
 
         repaint();

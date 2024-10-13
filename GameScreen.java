@@ -9,18 +9,9 @@ public class GameScreen {
 
     private Image backgroundImage;
     
-    static int displayHeight = 800;
-    static int displayWidth = 800;
-
-    public static int GRID = 40;
-
-    public static int getHeight() {
-        return displayHeight;
-    }
-
-    public static int getWidth() {
-        return displayWidth;
-    }
+    static final int DISPLAY_HEIGHT = 800;
+    static final int DISPLAY_WIDTH = 800;
+    public static final int GRID = 40;
 
     public void paintComponent(Graphics g) throws IOException {
         try {
@@ -34,12 +25,23 @@ public class GameScreen {
 
     public void gameScreen() {    
         Frog froggy = new Frog();
+        // Vehicle vehi = new Vehicle();
 
         f.add(froggy);
+        // f.add(vehi);
 
         f.setVisible(true);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.setSize(800, 800);
         f.setResizable(false);
     }
+
+    public static int getHeight() {
+        return DISPLAY_HEIGHT;
+    }
+
+    public static int getWidth() {
+        return DISPLAY_WIDTH;
+    }
+
 }
