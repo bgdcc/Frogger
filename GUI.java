@@ -70,7 +70,7 @@ public class GUI {
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new GameScreen().gameScreen();  // Open the new game frame.
+                new GameScreen().startUp();  // Open the new game frame.
                 frame.dispose();  // Close the current main menu frame (optional).
             }
         });

@@ -3,14 +3,15 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.*;
 import java.awt.image.*;
+import java.awt.*;
 import java.io.File;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-public class Vehicle extends JPanel implements ActionListener {
-    Timer t = new Timer(50, this);
+public class Vehicle extends JPanel {
+    // Timer t = new Timer(500, this);
 
     private int x = 0;
     private int y = 300;
@@ -29,14 +30,28 @@ public class Vehicle extends JPanel implements ActionListener {
         setFocusTraversalKeysEnabled(false);
     }
 
+    public void draw(Graphics g) {
+        g.setColor(Color.RED);
+        g.fillRect(x, y, vehicleWidth, vehicleHeight);
+    }
+
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
         g2.fill(vehicle);
-        t.start();
+        // t.start();
     }
 
+    public void move() {
+        if (x > GameScreen.DISPLAY_WIDTH) {
+            x = 0;
+        }
+
+        x += vehicleSpeed;
+    }
+
+    /*
     public void actionPerformed(ActionEvent e) {
         if (x > GameScreen.getWidth()) {
             x = 0;
@@ -44,5 +59,5 @@ public class Vehicle extends JPanel implements ActionListener {
 
         x += vehicleSpeed;
         repaint();
-    }
+    }*/
 }

@@ -1,12 +1,7 @@
-
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.*;
-import java.awt.Rectangle;
 import java.awt.event.*;
 import java.awt.image.*;
 import java.io.File;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -14,18 +9,18 @@ import javax.swing.*;
 /**
  * Implement the Frog class.
  */
-public class Frog extends JPanel implements ActionListener, KeyListener {
-    Timer t = new Timer(500, this); // Implement a timer.
+public class Frog extends JPanel {
+    //Timer t = new Timer(500, this); // Implement a timer.
 
     // Implement the original coordinates of the frog/player.
-    private int x = GameScreen.getWidth() / 2 + 1;
-    private int y = GameScreen.getHeight() - 120;
+    int frogX = GameScreen.DISPLAY_WIDTH / 2 + 1;
+    int frogY = GameScreen.DISPLAY_HEIGHT - 120;
     
     // Implement the Frog's wio
-    private int frogWidth = 40;
-    private int frogHeight = 40;
+    int frogWidth = 40;
+    int frogHeight = 40;
 
-    private RenderedImage image = null;
+    public RenderedImage image = null;
     private String sprite;
 
     private Rectangle frog;
@@ -34,21 +29,27 @@ public class Frog extends JPanel implements ActionListener, KeyListener {
      * Implement a constructor for the Frog class.
      * */
     Frog() {
-        frog = new Rectangle(x, y, frogWidth, frogHeight);
+        frog = new Rectangle(frogX, frogY, frogWidth, frogHeight);
         switchSprite("resources/frog.png");
 
-        t.start();
-        addKeyListener(this);
+        //t.start();
+        //addKeyListener(this);
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
     }
     
+    /**
+     * Implement a method which initializez the Object's image.
+     * @param g paints the image on screen.
+     */
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 =  (Graphics2D) g;
-        //g2.fill(frog);
+        g2.drawImage((Image) image, this.frogX, this.frogY, null);
+    }
 
-        g2.drawImage((Image) image, this.x, this.y, null);
+    public void draw(Graphics g) {
+        g.drawImage((Image) image, frogX, frogY, frogWidth, frogHeight, null);
     }
 
     /**
@@ -69,7 +70,8 @@ public class Frog extends JPanel implements ActionListener, KeyListener {
     /**
      * Define a set of parameters to restrict the frog's movement.
      */
-    @Override
+    //@Override
+    /*
     public void actionPerformed(ActionEvent e) {
         if (x < 0) {
             x = 0;
@@ -88,31 +90,61 @@ public class Frog extends JPanel implements ActionListener, KeyListener {
         }
 
         repaint();
-    }
+    }*/
 
+    /**
+     * Define the frog's movements based on the keys previously pressed.
+     * @param e registers the code of the key previously pressed.
+     */
+    /*
     public void keyPressed(KeyEvent e) {
         int theKey = e.getKeyCode();
 
         if (theKey == KeyEvent.VK_UP) {
             switchSprite("resources/frog.png");
-            y -= GameScreen.GRID;
-            frog.setLocation(x, y);
+
+            if (y - GameScreen.GRID < 0) {
+                y = 0;
+            } else {
+                y -= GameScreen.GRID;
+            }
+
+            frog.setLocationfro(x, y);
         }
 
         if (theKey == KeyEvent.VK_DOWN) {
             switchSprite("resources/frog_front.png");
-            y += GameScreen.GRID;
+
+            if (y + GameScreen.GRID > GameScreen.DISPLAY_WIDTH - frogWidth + 1) {
+                y = GameScreen.DISPLAY_WIDTH - frogWidth + 1;
+            } else {
+                y += GameScreen.GRID;
+            }
+
             frog.setLocation(x, y);
         }
 
         if (theKey == KeyEvent.VK_RIGHT) {
             switchSprite("resources/frog_right.png");
-            x += GameScreen.GRID;
+
+            if (x + GameScreen.GRID > GameScreen.DISPLAY_WIDTH - frogWidth + 1) {
+                x = GameScreen.DISPLAY_WIDTH - frogWidth + 1;
+            } else {
+                x += GameScreen.GRID;
+            }
+
             frog.setLocation(x, y);
         }
 
         if (theKey == KeyEvent.VK_LEFT) {
             switchSprite("resources/frog_left.png");
+
+            if (x - GameScreen.GRID < 0) {
+                x = 0;
+            } else {
+                x += GameScreen.GRID;
+            }
+
             x -= GameScreen.GRID;
             frog.setLocation(x, y);
         }
@@ -121,4 +153,5 @@ public class Frog extends JPanel implements ActionListener, KeyListener {
     public void keyTyped(KeyEvent e) {}
     
     public void keyReleased(KeyEvent e) {}
+    */
 }
