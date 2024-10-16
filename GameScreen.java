@@ -9,6 +9,7 @@ import javax.imageio.ImageIO;
 public class GameScreen extends JPanel implements Runnable, KeyListener {
     private Frog froggy;
     private Vehicle vehi;
+    private Log loggy;
     private Image backgroundImage;
 
     static final int DISPLAY_HEIGHT = 800;
@@ -26,6 +27,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         // Initialize the frog
         froggy = new Frog();
         vehi = new Vehicle();
+        loggy = new Log();
 
         // Setup the game screen
         addKeyListener(this);
@@ -49,10 +51,23 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         }
 
         // Draw the frog
-        froggy.draw(g);
+        loggy.draw(g);
         vehi.draw(g);
+        froggy.draw(g);
     }
 
+    public void isInsideLog() {
+        Rectangle frogBounds = froggy.getBounds();
+        Rectangle logBounds = loggy.getBounds();
+        if (
+            froggy.frogY >= loggy.getLogY()
+            && froggy.frogY <= loggy.getMaxY()
+            && froggy.frogX <= loggy.getMaxX()
+            && froggy.frogX >= loggy.getLogX()) {
+
+            froggy.frogX += loggy.logSpeed;
+        }
+    }
     
     @Override
     public void keyPressed(KeyEvent e) {
@@ -91,19 +106,21 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         repaint();
     }
 
-    @Override
     public void keyTyped(KeyEvent e) {}
 
-    @Override
     public void keyReleased(KeyEvent e) {}
 
     @Override
     public void run() {
         while (true) {
             vehi.move();
+            loggy.move();
+
+            isInsideLog();
+            
             repaint(); // Continuously repaint the game screen
             try {
-                Thread.sleep(16); // Approx. 60 FPS
+                Thread.sleep(32); // Approx. 60 FPS
             } catch (InterruptedException e2) {
                 e2.printStackTrace();
             }

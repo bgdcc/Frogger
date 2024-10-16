@@ -1,6 +1,3 @@
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.event.*;
 import java.awt.image.*;
 import java.awt.*;
@@ -10,21 +7,21 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-public class Vehicle extends JPanel {
+public class Log extends JPanel {
     // Timer t = new Timer(500, this);
 
     private int x = 0;
-    private int y = 300;
+    private int y = 500;
 
-    private int vehicleSpeed = 40;
+    int logSpeed = 10;
 
-    private int vehicleWidth = 80;
-    private int vehicleHeight = 40;
+    int logWidth = 80;
+    int logHeight = 90;
 
-    private Rectangle vehicle;
+    private Rectangle log;
 
-    Vehicle() {
-        vehicle = new Rectangle(x, y, vehicleWidth, vehicleHeight);
+    Log() {
+        log = new Rectangle(x, y, logWidth, logHeight);
 
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
@@ -32,14 +29,14 @@ public class Vehicle extends JPanel {
 
     public void draw(Graphics g) {
         g.setColor(Color.RED);
-        g.fillRect(x, y, vehicleWidth, vehicleHeight);
+        g.fillRect(x, y, logWidth, logHeight);
     }
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
-        g2.fill(vehicle);
+        g2.fill(log);
         // t.start();
     }
 
@@ -48,6 +45,26 @@ public class Vehicle extends JPanel {
             x = 0;
         }
 
-        x += vehicleSpeed;
+        x += logSpeed;
+    }
+
+    public int getLogX() {
+        return x;
+    }
+
+    public int getMaxX() {
+        return x + logWidth - 1;
+    }
+
+    public int getMaxY() {
+        return y + logHeight - 1;
+    }
+
+    public int getLogY() {
+        return y;
+    }
+
+    public Rectangle getBounds() {
+        return log;
     }
 }

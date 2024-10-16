@@ -20,6 +20,9 @@ public class Frog extends JPanel {
     int frogWidth = 40;
     int frogHeight = 40;
 
+    int frogCenterX = frogX - 1 + frogWidth / 2;
+    int frogCenterY = frogY + frogHeight / 2;
+
     public RenderedImage image = null;
     private String sprite;
 
@@ -65,6 +68,10 @@ public class Frog extends JPanel {
         } catch (IOException e1) {
             e1.printStackTrace();
         }
+    }
+
+    public Rectangle getBounds() {
+        return frog;
     }
 
     /**
