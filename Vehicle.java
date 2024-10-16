@@ -11,7 +11,7 @@ public class Vehicle extends JPanel {
     // Timer t = new Timer(500, this);
 
     private int x = 0;
-    private int y = 300;
+    private int y = 400;
 
     private int vehicleSpeed;
 
@@ -46,14 +46,4 @@ public class Vehicle extends JPanel {
     public Rectangle getBounds() {
         return vehicle;
     }
-
-    /*
-    public void actionPerformed(ActionEvent e) {
-        if (x > GameScreen.getWidth()) {
-            x = 0;
-        }
-
-        x += vehicleSpeed;
-        repaint();
-    }*/
 }

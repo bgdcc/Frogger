@@ -7,19 +7,24 @@ import javax.imageio.ImageIO;
 
 
 public class GameScreen extends JPanel implements Runnable, KeyListener {
+    // Declare all the objects pertaining to the program.
     private Frog froggy;
-    //private Vehicle vehi;
-    private Image backgroundImage;
+    private Log loggy;
+
     private Vehicle truck;
     private Vehicle car;
     private Vehicle motorcycle;
+
+    // Declare a variable meant to store the background image.
+    private Image backgroundImage;
     //private JButton backToMenuButton;
     //private JFrame gameFrame;
 
     static final int DISPLAY_HEIGHT = 800;
     static final int DISPLAY_WIDTH = 800;
-    public static final int GRID = 40;
+    static final int GRID = 40;
     private boolean gameOver = false;
+    private int lifeCounter = 3;
 
     public GameScreen() {
         // Load the background image
@@ -31,6 +36,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 
         // Initialize the frog
         froggy = new Frog();
+        loggy = new Log();
        
         truck = new Vehicle(0, 300, 5); 
         car = new Vehicle(0, 400, 10); 
@@ -59,6 +65,16 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         new Thread(this).start();
     }
 
+    public void isInsideLog() {
+        if (froggy.getCenterY() >= loggy.getLogY()
+                && froggy.getCenterY()  <= loggy.getMaxY()
+                && froggy.getCenterX() <= loggy.getMaxX()
+                && froggy.getCenterX() >= loggy.getLogX()) {
+
+            froggy.frogX += loggy.logSpeed;
+        }
+    }
+
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -71,10 +87,12 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         }
 
         // Draw the frog
-        froggy.draw(g);
         truck.draw(g);
         car.draw(g);
         motorcycle.draw(g);
+        loggy.draw(g);
+        froggy.draw(g);
+
         if (gameOver) {
             g.setColor(Color.BLACK);
             g.setFont(new Font("Arial", Font.BOLD, 50));
@@ -84,12 +102,18 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         }
     }
 
-    
+    /** 
+     * Update the frog's position based on the key input
+     * @param e registers the key which has been pressed recently.
+    */
     @Override
     public void keyPressed(KeyEvent e) {
         int theKey = e.getKeyCode();
 
-        // Update frog position based on arrow key input
+        //if (!gameOver && lifeCounter != 0){
+        // Update the frog's position based on the key input
+
+        // Move up.
         if (theKey == KeyEvent.VK_UP) {
             froggy.switchSprite("resources/frog.png");
             if (froggy.frogY - GRID >= 0) {
@@ -97,25 +121,29 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
             }
         }
 
+        // Move down.
         if (theKey == KeyEvent.VK_DOWN) {
             froggy.switchSprite("resources/frog_front.png");
             if (froggy.frogY + GRID <= DISPLAY_HEIGHT - froggy.frogHeight) {
-                froggy.frogY += GRID; // Move down
+                froggy.frogY += GRID;
             }
         }
 
+        // Move right.
         if (theKey == KeyEvent.VK_RIGHT) {
             froggy.switchSprite("resources/frog_right.png");
             if (froggy.frogX + GRID <= DISPLAY_WIDTH - froggy.frogWidth) {
-                froggy.frogX += GRID; // Move right
+                froggy.frogX += GRID;
             }
         }
 
+        // Move left.
         if (theKey == KeyEvent.VK_LEFT) {
             froggy.switchSprite("resources/frog_left.png");
             if (froggy.frogX - GRID >= 0) {
-                froggy.frogX -= GRID; // Move left
+                froggy.frogX -= GRID; 
             }
+           // }
         }
 
     
@@ -128,9 +156,14 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {}
 
+    /**
+     * Checks if the frog was hit by a car.
+     */
     public void checkCollision() {
         Rectangle frogBounds = froggy.getBounds();
-        if (frogBounds.intersects(truck.getBounds()) || frogBounds.intersects(car.getBounds()) || frogBounds.intersects(motorcycle.getBounds())) {
+        if (frogBounds.intersects(truck.getBounds()) 
+            || frogBounds.intersects(car.getBounds())
+            || frogBounds.intersects(motorcycle.getBounds())) {
             gameOver = true;
         }
     }
@@ -142,14 +175,17 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
                 truck.move();
                 car.move();
                 motorcycle.move();
+                loggy.move();
 
+                // Check if the player comes into contact with any other object.
+                isInsideLog();
                 checkCollision();
                 repaint();
                 
             }
 
             try {
-                Thread.sleep(16); // Approx. 60 FPS
+                Thread.sleep(128); // Approx. 60 FPS
             } catch (InterruptedException e2) {
                 e2.printStackTrace();
             }
