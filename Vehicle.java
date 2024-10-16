@@ -1,6 +1,3 @@
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.event.*;
 import java.awt.image.*;
 import java.awt.*;
@@ -16,14 +13,17 @@ public class Vehicle extends JPanel {
     private int x = 0;
     private int y = 300;
 
-    private int vehicleSpeed = 50;
+    private int vehicleSpeed;
 
     private int vehicleWidth = 80;
     private int vehicleHeight = 40;
 
     private Rectangle vehicle;
 
-    Vehicle() {
+    Vehicle(int x, int y, int vehicleSpeed) {
+        this.x = x;
+        this.y = y;
+        this.vehicleSpeed = vehicleSpeed;
         vehicle = new Rectangle(x, y, vehicleWidth, vehicleHeight);
 
         setFocusable(true);
@@ -35,20 +35,16 @@ public class Vehicle extends JPanel {
         g.fillRect(x, y, vehicleWidth, vehicleHeight);
     }
 
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D) g;
-
-        g2.fill(vehicle);
-        // t.start();
-    }
-
     public void move() {
         if (x > GameScreen.DISPLAY_WIDTH) {
             x = 0;
         }
-
         x += vehicleSpeed;
+        vehicle.setBounds(x, y, vehicleWidth, vehicleHeight);
+    }
+
+    public Rectangle getBounds() {
+        return vehicle;
     }
 
     /*

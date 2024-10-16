@@ -8,12 +8,18 @@ import javax.imageio.ImageIO;
 
 public class GameScreen extends JPanel implements Runnable, KeyListener {
     private Frog froggy;
-    private Vehicle vehi;
+    //private Vehicle vehi;
     private Image backgroundImage;
+    private Vehicle truck;
+    private Vehicle car;
+    private Vehicle motorcycle;
+    //private JButton backToMenuButton;
+    //private JFrame gameFrame;
 
     static final int DISPLAY_HEIGHT = 800;
     static final int DISPLAY_WIDTH = 800;
     public static final int GRID = 40;
+    private boolean gameOver = false;
 
     public GameScreen() {
         // Load the background image
@@ -25,8 +31,20 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 
         // Initialize the frog
         froggy = new Frog();
-        vehi = new Vehicle();
-
+       
+        truck = new Vehicle(0, 300, 5); 
+        car = new Vehicle(0, 400, 10); 
+        motorcycle = new Vehicle(0, 500, 15); 
+        //backToMenuButton = new JButton("Back to Menu");
+        //backToMenuButton.setVisible(false);  
+        /*backToMenuButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Go back to the main menu when clicked
+                returnToMenu();
+            }
+        });
+        */
         // Setup the game screen
         addKeyListener(this);
         setFocusable(true);
@@ -34,6 +52,10 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         setSize(DISPLAY_WIDTH, DISPLAY_HEIGHT);
 
         // Start the game loop
+          
+          this.setLayout(null);  
+          //backToMenuButton.setBounds(300, 500, 200, 50);  
+          //add(backToMenuButton);
         new Thread(this).start();
     }
 
@@ -50,7 +72,16 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 
         // Draw the frog
         froggy.draw(g);
-        vehi.draw(g);
+        truck.draw(g);
+        car.draw(g);
+        motorcycle.draw(g);
+        if (gameOver) {
+            g.setColor(Color.BLACK);
+            g.setFont(new Font("Arial", Font.BOLD, 50));
+            g.drawString("GAME OVER", 250, 400);
+            //backToMenuButton.setVisible(true);
+
+        }
     }
 
     
@@ -97,11 +128,26 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {}
 
+    public void checkCollision() {
+        Rectangle frogBounds = froggy.getBounds();
+        if (frogBounds.intersects(truck.getBounds()) || frogBounds.intersects(car.getBounds()) || frogBounds.intersects(motorcycle.getBounds())) {
+            gameOver = true;
+        }
+    }
+
     @Override
     public void run() {
         while (true) {
-            vehi.move();
-            repaint(); // Continuously repaint the game screen
+            if (!gameOver) {
+                truck.move();
+                car.move();
+                motorcycle.move();
+
+                checkCollision();
+                repaint();
+                
+            }
+
             try {
                 Thread.sleep(16); // Approx. 60 FPS
             } catch (InterruptedException e2) {
@@ -109,6 +155,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
             }
         }
     }
+    
 
     public void startUp() {
         JFrame frame = new JFrame("Frog Game");

@@ -47,7 +47,9 @@ public class Frog extends JPanel {
         Graphics2D g2 =  (Graphics2D) g;
         g2.drawImage((Image) image, this.frogX, this.frogY, null);
     }
-
+    public Rectangle getBounds() {
+        return new Rectangle(frogX, frogY, frogWidth, frogHeight);
+    }
     public void draw(Graphics g) {
         g.drawImage((Image) image, frogX, frogY, frogWidth, frogHeight, null);
     }
