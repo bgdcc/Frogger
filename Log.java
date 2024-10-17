@@ -11,7 +11,7 @@ public class Log extends JPanel {
     private int x = 0;
     private int y = 640;
 
-    int logSpeed = 50;
+    int logSpeed = 35;
 
     int logWidth = 80;
     int logHeight = 40;

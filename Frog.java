@@ -9,6 +9,7 @@ import javax.swing.*;
 /**
  * Implement the Frog class.
  */
+
 public class Frog extends JPanel {
     // Implement the original coordinates of the frog/player.
     int frogX = GameScreen.DISPLAY_WIDTH / 2 + 1;
