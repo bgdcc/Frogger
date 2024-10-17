@@ -41,7 +41,7 @@ public class GUI {
         frame.setTitle("Frogger Menu");
         frame.pack();  // Adjusts the frame to fit its components
         frame.setVisible(true);  // Makes the frame visible
-        frame.setSize(800,800);
+        frame.setSize(800, 800);
         frame.setResizable(false);
     }
 

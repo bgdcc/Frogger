@@ -1,8 +1,6 @@
-import java.awt.event.*;
-import java.awt.image.*;
 import java.awt.*;
+import java.awt.image.*;
 import java.io.File;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -13,17 +11,23 @@ public class Vehicle extends JPanel {
     private int x = 0;
     private int y = 400;
 
-    private int vehicleSpeed;
+    private String folderName;
 
-    private int vehicleWidth = 80;
-    private int vehicleHeight = 40;
+    int vehicleSpeed;
 
+    int vehicleWidth;
+    int vehicleHeight;
+
+    private RenderedImage image = null;
+    private String sprite;
     private Rectangle vehicle;
 
-    Vehicle(int x, int y, int vehicleSpeed) {
+    /** 
+     * Implement a constructor for the Vehicle class.
+    */
+    Vehicle(int x, int y) {
         this.x = x;
         this.y = y;
-        this.vehicleSpeed = vehicleSpeed;
         vehicle = new Rectangle(x, y, vehicleWidth, vehicleHeight);
 
         setFocusable(true);
@@ -35,15 +39,36 @@ public class Vehicle extends JPanel {
         g.fillRect(x, y, vehicleWidth, vehicleHeight);
     }
 
+    /** 
+     * Move the vehicle on the screen.
+     */
     public void move() {
-        if (x > GameScreen.DISPLAY_WIDTH) {
-            x = 0;
+        if (x - 1 + vehicleWidth <= 0 && vehicleSpeed < 0 ) {
+            x = GameScreen.DISPLAY_WIDTH + 1;
+        } else if (x > GameScreen.DISPLAY_WIDTH && vehicleSpeed > 0) {
+            x = -vehicleWidth;
         }
         x += vehicleSpeed;
         vehicle.setBounds(x, y, vehicleWidth, vehicleHeight);
     }
 
+
     public Rectangle getBounds() {
         return vehicle;
+    }
+
+    /**
+     * Initialize a method to switch between sprites.
+     * @param sprite
+     */
+    public void switchSprite(String sprite) {
+        this.sprite = sprite;
+        try {
+            //File intialFile = new File(sprite);
+            image = ImageIO.read(new File(sprite));
+            //ImageIO.write(image, "png", new File(sprite));
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
     }
 }

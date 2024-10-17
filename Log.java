@@ -9,9 +9,9 @@ import javax.swing.*;
 
 public class Log extends JPanel {
     private int x = 0;
-    private int y = 640;
+    private int y = 331;
 
-    int logSpeed = 35;
+    int logSpeed = 15;
 
     int logWidth = 80;
     int logHeight = 40;

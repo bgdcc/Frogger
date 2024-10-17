@@ -27,7 +27,12 @@ public class Frog extends JPanel {
     /** 
      * Implement a constructor for the Frog class.
      * */
-    Frog() {
+    Frog(int x, int y, int width, int height) {
+        this.frogX = x;
+        this.frogY = y;
+        this.frogWidth = width;
+        this.frogHeight = height;
+        
         frog = new Rectangle(frogX, frogY, frogWidth, frogHeight);
         switchSprite("resources/frog.png");
 
