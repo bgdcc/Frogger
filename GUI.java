@@ -70,8 +70,15 @@ public class GUI {
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new GameScreen().startUp();  // Open the new game frame.
-                frame.dispose();  // Close the current main menu frame (optional).
+                JFrame gameFrame = new JFrame();  // Create a new frame for the game
+                GameScreen gameScreen = new GameScreen(gameFrame);  // Pass the frame to GameScreen
+                gameFrame.add(gameScreen);
+                gameFrame.setSize(800, 800);
+                gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                gameFrame.setVisible(true);
+                gameScreen.requestFocusInWindow();  // Request focus for key input
+        
+                frame.dispose();  // Close the main menu frame (optional)
             }
         });
 
