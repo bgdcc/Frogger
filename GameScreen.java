@@ -155,42 +155,73 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     public void keyPressed(KeyEvent e) {
         int theKey = e.getKeyCode();
 
-        //if (!gameOver && lifeCounter != 0){
-        // Update the frog's position based on the key input
-
-        // Move up.
         if (!gameOver) {
-            if (theKey == KeyEvent.VK_UP) {
-                froggy.switchSprite("resources/frog.png");
-                if (froggy.frogY - GRID >= 0) {
-                    froggy.frogY -= GRID; // Move up
-                }
-            }
+            // Implement a Thread specific to the player.
+            new Thread(() -> {
+                try {
+                    // Move up.
+                    if (theKey == KeyEvent.VK_UP) {
+                        froggy.switchSprite("resources/frog.png");
+                        if (froggy.frogY - GRID >= 0) {
+                            froggy.switchSprite("resources/frog_front.png");
+                            froggy.frogY -= GRID / 2;
 
-            // Move down.
-            if (theKey == KeyEvent.VK_DOWN) {
-                froggy.switchSprite("resources/frog_front.png");
-                if (froggy.frogY + GRID <= DISPLAY_HEIGHT - froggy.frogHeight) {
-                    froggy.frogY += GRID;
-                }
-            }
+                            Thread.sleep(32);
 
-            // Move right.
-            if (theKey == KeyEvent.VK_RIGHT) {
-                froggy.switchSprite("resources/frog_right.png");
-                if (froggy.frogX + GRID <= DISPLAY_WIDTH - froggy.frogWidth) {
-                    froggy.frogX += GRID;
-                }
-            }
-        
+                            froggy.frogY -= GRID / 2;
+                            froggy.switchSprite("resources/frog.png");
+                        }
+                    }
 
-            // Move left.
-            if (theKey == KeyEvent.VK_LEFT) {
-                froggy.switchSprite("resources/frog_left.png");
-                if (froggy.frogX - GRID >= 0) {
-                    froggy.frogX -= GRID; 
+                    // Move down.
+                    if (theKey == KeyEvent.VK_DOWN) {
+                        froggy.switchSprite("resources/frog_front.png");
+                        if (froggy.frogY + GRID <= DISPLAY_HEIGHT - froggy.frogHeight) {
+                            froggy.switchSprite("resources/frog.png");
+
+                            froggy.frogY += GRID / 2;
+
+                            Thread.sleep(32);
+
+                            froggy.frogY += GRID / 2;
+                            froggy.switchSprite("resources/frog_front.png");
+                        }
+                    }
+
+                    // Move right.
+                    if (theKey == KeyEvent.VK_RIGHT) {
+                        froggy.switchSprite("resources/frog_right.png");
+                        if (froggy.frogX + GRID <= DISPLAY_WIDTH - froggy.frogWidth) {
+                            froggy.switchSprite("resources/frog_left.png");
+                            froggy.frogX += GRID / 2;
+
+                            Thread.sleep(32);
+
+                            froggy.frogX += GRID / 2;
+                            froggy.switchSprite("resources/frog_right.png");
+                        }
+                    }
+
+                    // Move left.
+                    if (theKey == KeyEvent.VK_LEFT) {
+                        froggy.switchSprite("resources/frog_left.png");
+                        if (froggy.frogX - GRID >= 0) {
+                            froggy.switchSprite("resources/frog_right.png");
+                            froggy.frogX -= GRID / 2;
+
+                            // Introduce a delay.
+                            Thread.sleep(32);
+
+                            froggy.switchSprite("resources/frog_left.png");
+                            froggy.frogX -= GRID / 2;
+                        }
+                    }
+
+                    repaint();
+                } catch (InterruptedException e1) {
+                    e1.printStackTrace();
                 }
-            }
+            }).start();
         }
 
         repaint();

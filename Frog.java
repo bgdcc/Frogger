@@ -24,6 +24,8 @@ public class Frog extends JPanel {
 
     private Rectangle frog;
 
+    Thread frogThread = new Thread(); // delete if necessary
+
     /** 
      * Implement a constructor for the Frog class.
      * */
@@ -35,6 +37,8 @@ public class Frog extends JPanel {
         
         frog = new Rectangle(frogX, frogY, frogWidth, frogHeight);
         switchSprite("resources/frog.png");
+
+        frogThread.start(); // delete if necessary
 
         //t.start();
         //addKeyListener(this);
@@ -51,9 +55,11 @@ public class Frog extends JPanel {
         Graphics2D g2 =  (Graphics2D) g;
         g2.drawImage((Image) image, this.frogX, this.frogY, null);
     }
+
     public Rectangle getBounds() {
         return new Rectangle(frogX, frogY, frogWidth, frogHeight);
     }
+
     public void draw(Graphics g) {
         g.drawImage((Image) image, frogX, frogY, frogWidth, frogHeight, null);
     }
