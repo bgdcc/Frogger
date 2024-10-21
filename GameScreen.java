@@ -78,8 +78,8 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         trucks[3] = new Truck(561, 511, -1);
 
         logs[0] = new Log(1, 331);
-        logs[1] = new Log(201, 331);
-        logs[2] = new Log(401, 331);
+        logs[1] = new Log(301, 331);
+        logs[2] = new Log(601, 331);
         logs[3] = new Log(1, 271);
         logs[4] = new Log(201, 271);
         logs[5] = new Log(401, 271);
@@ -110,23 +110,26 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         new GUI();  // Reopen the main menu by creating a new instance
     }
 
+    /**
+     * Implement a method which makes the frog move alongside the log when in contact.
+     */
     public void checkForLogSpeed() {
-        for(Log loggy: logs){
+        for (Log loggy: logs){
             if (froggy.getCenterY() >= loggy.getLogY()
-                    && froggy.getCenterY() <= loggy.getMaxY()
-                    && froggy.getCenterX() <= loggy.getMaxX()
-                    && froggy.getCenterX() >= loggy.getLogX()) {
+                && froggy.getCenterY() <= loggy.getMaxY()
+                && froggy.getCenterX() <= loggy.getMaxX()
+                && froggy.getCenterX() >= loggy.getLogX()) {
                 froggy.frogX += loggy.logSpeed;
             }
         }
     }
 
     public boolean isInsideLog() {
-        for(Log loggy: logs){
+        for (Log loggy: logs) {
             if (froggy.getCenterY() >= loggy.getLogY()
-                    && froggy.getCenterY() <= loggy.getMaxY()
-                    && froggy.getCenterX() <= loggy.getMaxX()
-                    && froggy.getCenterX() >= loggy.getLogX()) {
+                && froggy.getCenterY() <= loggy.getMaxY()
+                && froggy.getCenterX() <= loggy.getMaxX()
+                && froggy.getCenterX() >= loggy.getLogX()) {
                 return true;
             }
         }
@@ -134,6 +137,9 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         return false;
     }
 
+    /**
+     * Implement a method which ends the player's current life if in contact with the water.
+     */
     public void checkWaterContact() {
         int frogMaxY = froggy.frogY + froggy.frogWidth - 1;
         if (frogMaxY < 381 && froggy.frogY > 51
@@ -206,7 +212,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
                         if (froggy.frogY - GRID >= 0) {
                             froggy.switchSprite("resources/frog_front.png");
                             froggy.frogY -= GRID / 2;
-                            Thread.sleep(32);
+                            Thread.sleep(48);
                             froggy.frogY -= GRID / 2;
                             froggy.switchSprite("resources/frog.png");
 
@@ -224,7 +230,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
                         if (froggy.frogY + GRID <= DISPLAY_HEIGHT - froggy.frogHeight) {
                             froggy.switchSprite("resources/frog.png");
                             froggy.frogY += GRID / 2;
-                            Thread.sleep(32);
+                            Thread.sleep(48);
                             froggy.frogY += GRID / 2;
                             froggy.switchSprite("resources/frog_front.png");
                         }
@@ -236,7 +242,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
                         if (froggy.frogX + GRID <= DISPLAY_WIDTH - froggy.frogWidth) {
                             froggy.switchSprite("resources/frog_left.png");
                             froggy.frogX += GRID / 2;
-                            Thread.sleep(32);
+                            Thread.sleep(48);
                             froggy.frogX += GRID / 2;
                             froggy.switchSprite("resources/frog_right.png");
                         }
@@ -248,7 +254,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
                         if (froggy.frogX - GRID >= 0) {
                             froggy.switchSprite("resources/frog_right.png");
                             froggy.frogX -= GRID / 2;
-                            Thread.sleep(32);
+                            Thread.sleep(48);
                             froggy.switchSprite("resources/frog_left.png");
                             froggy.frogX -= GRID / 2;
                         }
