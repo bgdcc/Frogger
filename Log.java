@@ -11,14 +11,17 @@ public class Log extends JPanel {
     private int x = 0;
     private int y = 331;
 
-    int logSpeed = 15;
+    int logSpeed = 10;
 
     int logWidth = 80;
     int logHeight = 40;
 
     private Rectangle log;
 
-    Log() {
+    Log(int x, int y) {
+        this.x = x;
+        this.y = y;
+
         log = new Rectangle(x, y, logWidth, logHeight);
 
         setFocusable(true);
@@ -41,7 +44,7 @@ public class Log extends JPanel {
 
     public void move() {
         if (x > GameScreen.DISPLAY_WIDTH) {
-            x = 0;
+            x = -logWidth;
         }
 
         x += logSpeed;

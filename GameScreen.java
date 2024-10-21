@@ -7,10 +7,12 @@ import javax.swing.*;
 
 public class GameScreen extends JPanel implements Runnable, KeyListener {
     private Frog froggy;
-    private Log loggy;
+
+    private Log[] logs = new Log[15];
     private Car[] cars = new Car[4];
     private Motorcycle[] motorcycles = new Motorcycle[4];
     private Truck[] trucks = new Truck[4];
+
     private Image backgroundImage;
     private Image heartImage;
     private JButton backToMenuButton;
@@ -23,14 +25,20 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     private final int initialX = DISPLAY_WIDTH / 2 - 19;
     private final int initialY = DISPLAY_HEIGHT - 59;
 
+    // Implement a vcariable which tracks the frog's progress on the map.
+    private int currentProgress = initialY;
+
     private boolean gameOver = false;
     private int lifeCounter = 3;
     private int score = 0;  // Initialize score
 
+    /** 
+     * Implement a constructor for the GameScreen class.
+     * */
     public GameScreen(JFrame frame) {
         this.gameFrame = frame;
 
-        // Load the background and heart images
+        // Load the background and heart images.
         try {
             backgroundImage = ImageIO.read(new File("resources/frogger_map.png"));
             heartImage = ImageIO.read(new File("resources/heart.png"));
@@ -39,9 +47,8 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         }
 
         froggy = new Frog(initialX, initialY, 40, 40);
-        loggy = new Log();
-        setUpTheVehicles();
-        setUpBackToMenuButton(); // Call to set up the "Back to Menu" button
+        setUpTheObjects();
+        setUpBackToMenuButton(); // Set up the "Back to Menu" button.
 
         addKeyListener(this);
         setFocusable(true);
@@ -51,21 +58,41 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         new Thread(this).start();
     }
 
-    public void setUpTheVehicles() {
-        cars[0] = new Car(1, 576);
-        cars[1] = new Car(201, 576);
-        cars[2] = new Car(401, 576);
-        cars[3] = new Car(601, 576);
+    /**
+     * Initialize all the obstacles the frog/player will encounter.
+     */
+    public void setUpTheObjects() {
+        cars[0] = new Car(1, 576, 1);
+        cars[1] = new Car(201, 576, 1);
+        cars[2] = new Car(401, 576, 1);
+        cars[3] = new Car(601, 576, 1);
 
-        motorcycles[0] = new Motorcycle(1, 451);
-        motorcycles[1] = new Motorcycle(401, 451);
-        motorcycles[2] = new Motorcycle(121, 691);
-        motorcycles[3] = new Motorcycle(521, 691);
+        motorcycles[0] = new Motorcycle(1, 451, 1);
+        motorcycles[1] = new Motorcycle(401, 451, 1);
+        motorcycles[2] = new Motorcycle(121, 691, 1);
+        motorcycles[3] = new Motorcycle(521, 691, 1);
 
-        trucks[0] = new Truck(1, 631);
-        trucks[1] = new Truck(401, 631);
-        trucks[2] = new Truck(161, 511);
-        trucks[3] = new Truck(561, 511);
+        trucks[0] = new Truck(1, 631, -1);
+        trucks[1] = new Truck(401, 631, -1);
+        trucks[2] = new Truck(161, 511, -1);
+        trucks[3] = new Truck(561, 511, -1);
+
+        logs[0] = new Log(1, 331);
+        logs[1] = new Log(201, 331);
+        logs[2] = new Log(401, 331);
+        logs[3] = new Log(1, 271);
+        logs[4] = new Log(201, 271);
+        logs[5] = new Log(401, 271);
+        logs[6] = new Log(1, 211);
+        logs[7] = new Log(201, 211);
+        logs[8] = new Log(401, 211);
+        logs[9] = new Log(1, 151);
+        logs[10] = new Log(201, 151);
+        logs[11] = new Log(401, 151);
+        logs[12] = new Log(1, 91);
+        logs[13] = new Log(201, 91);
+        logs[14] = new Log(401, 91);
+
     }
 
     public void setUpBackToMenuButton() {
@@ -80,15 +107,45 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 
     public void returnToMenu() {
         gameFrame.dispose(); // Close the game window
-        GUI mainMenu = new GUI();  // Reopen the main menu by creating a new instance
+        new GUI();  // Reopen the main menu by creating a new instance
     }
 
-    public void isInsideLog() {
-        if (froggy.getCenterY() >= loggy.getLogY()
-                && froggy.getCenterY() <= loggy.getMaxY()
-                && froggy.getCenterX() <= loggy.getMaxX()
-                && froggy.getCenterX() >= loggy.getLogX()) {
-            froggy.frogX += loggy.logSpeed;
+    public void checkForLogSpeed() {
+        for(Log loggy: logs){
+            if (froggy.getCenterY() >= loggy.getLogY()
+                    && froggy.getCenterY() <= loggy.getMaxY()
+                    && froggy.getCenterX() <= loggy.getMaxX()
+                    && froggy.getCenterX() >= loggy.getLogX()) {
+                froggy.frogX += loggy.logSpeed;
+            }
+        }
+    }
+
+    public boolean isInsideLog() {
+        for(Log loggy: logs){
+            if (froggy.getCenterY() >= loggy.getLogY()
+                    && froggy.getCenterY() <= loggy.getMaxY()
+                    && froggy.getCenterX() <= loggy.getMaxX()
+                    && froggy.getCenterX() >= loggy.getLogX()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public void checkWaterContact() {
+        int frogMaxY = froggy.frogY + froggy.frogWidth - 1;
+        if (frogMaxY < 381 && froggy.frogY > 51
+             && !isInsideLog()) {
+
+            lifeCounter--;
+
+            if (lifeCounter == 0) {        
+                gameOver = true;
+            } else {
+                resetGame();
+            }
         }
     }
 
@@ -103,14 +160,17 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
             g.drawImage(newImage, 0, 0, null);
         }
 
+        for (int i = 0; i < 15; i++) {
+            logs[i].draw(g);
+        }
+
+        froggy.draw(g);
+
         for (int i = 0; i < 4; i++) {
             trucks[i].draw(g);
             cars[i].draw(g);
             motorcycles[i].draw(g);
         }
-
-        loggy.draw(g);
-        froggy.draw(g);
 
         // Draw hearts based on life counter
         for (int i = 0; i < lifeCounter; i++) {
@@ -151,7 +211,10 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
                             froggy.switchSprite("resources/frog.png");
 
                             // Update score when moving forward
-                            score += 10;
+                            if (froggy.frogY < currentProgress) {
+                                currentProgress = froggy.frogY;
+                                score += 10; 
+                            }
                         }
                     }
 
@@ -227,6 +290,9 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     public void resetGame() {
         froggy.frogX = initialX;
         froggy.frogY = initialY;
+
+        currentProgress = initialY;
+
         repaint();
     }
 
@@ -239,10 +305,14 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
                     cars[i].move();
                     trucks[i].move();
                 }
-                loggy.move();
 
-                isInsideLog();
+                for (int i = 0; i < 15; i++){
+                    logs[i].move();
+                }
+
+                checkForLogSpeed();
                 checkCollision();
+                checkWaterContact();
                 repaint();
             }
 

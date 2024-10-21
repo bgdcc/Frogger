@@ -23,9 +23,6 @@ public class Frog extends JPanel {
     private String sprite;
 
     private Rectangle frog;
-
-    Thread frogThread = new Thread(); // delete if necessary
-
     /** 
      * Implement a constructor for the Frog class.
      * */
@@ -37,8 +34,6 @@ public class Frog extends JPanel {
         
         frog = new Rectangle(frogX, frogY, frogWidth, frogHeight);
         switchSprite("resources/frog.png");
-
-        frogThread.start(); // delete if necessary
 
         //t.start();
         //addKeyListener(this);

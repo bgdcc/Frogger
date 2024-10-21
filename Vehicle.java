@@ -27,7 +27,7 @@ public class Vehicle extends JPanel {
     /** 
      * Implement a constructor for the Vehicle class.
     */
-    Vehicle(int x, int y) {
+    Vehicle(int x, int y, int direction) {
         this.x = x;
         this.y = y;
         vehicle = new Rectangle(x, y, vehicleWidth, vehicleHeight);
@@ -81,11 +81,7 @@ public class Vehicle extends JPanel {
         String[] colors = {"red", "blue", "yellow", "orange"};
         int colorIndex = rand.nextInt(4);
         try {
-            //File intialFile = new File(sprite);
-
-            // Image newImage = ((Image) image).getScaledInstance(vehicleWidth, vehicleHeight, Image.SCALE_DEFAULT);
             image = ImageIO.read(new File("resources/" + colors[colorIndex] + "_car.png"));
-            //ImageIO.write(image, "png", new File(sprite));
         } catch (IOException e1) {
             e1.printStackTrace();
         }
