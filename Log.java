@@ -7,8 +7,8 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class Log extends JPanel {
-    private int x = 0;
-    private int y = 331;
+    private int x;
+    private int y;
 
     private RenderedImage image;
 
