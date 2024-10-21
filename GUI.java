@@ -18,11 +18,12 @@ public class GUI {
     private JPanel mainPanel;  // Main panel for CardLayout
     private CardLayout cardLayout;  // CardLayout to switch between screens
 
+    /**
+     * Define a constructor for the GUI class.
+     */
     public GUI() {
         // Create the main frame
         frame = new JFrame();
-        frame.setSize(800,800);
-        frame.setResizable(false);
 
         // Set up CardLayout for switching between panels
         cardLayout = new CardLayout();
@@ -40,6 +41,8 @@ public class GUI {
         frame.setTitle("Frogger Menu");
         frame.pack();  // Adjusts the frame to fit its components
         frame.setVisible(true);  // Makes the frame visible
+        frame.setSize(800, 800);
+        frame.setResizable(false);
     }
 
     // Method to create the main menu panel
@@ -64,7 +67,22 @@ public class GUI {
             }
         });
 
-        // Add buttons to the panel
+        startButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame gameFrame = new JFrame();  // Create a new frame for the game
+                GameScreen gameScreen = new GameScreen(gameFrame);  // Pass the frame to GameScreen
+                gameFrame.add(gameScreen);
+                gameFrame.setSize(800, 800);
+                gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                gameFrame.setVisible(true);
+                gameScreen.requestFocusInWindow();  // Request focus for key input
+        
+                frame.dispose();  // Close the main menu frame (optional)
+            }
+        });
+
+        // Add buttons to the panel.
         panel.add(startButton);
         panel.add(aboutButton);
         panel.add(settingsButton);

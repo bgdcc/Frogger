@@ -1,12 +1,7 @@
-
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.*;
-import java.awt.Rectangle;
 import java.awt.event.*;
 import java.awt.image.*;
 import java.io.File;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -14,41 +9,54 @@ import javax.swing.*;
 /**
  * Implement the Frog class.
  */
-public class Frog extends JPanel implements ActionListener, KeyListener {
-    Timer t = new Timer(500, this); // Implement a timer.
 
+public class Frog extends JPanel {
     // Implement the original coordinates of the frog/player.
-    private int x = GameScreen.getWidth() / 2 + 1;
-    private int y = GameScreen.getHeight() - 120;
+    int frogX = GameScreen.DISPLAY_WIDTH / 2 + 1;
+    int frogY = GameScreen.DISPLAY_HEIGHT - 120;
     
     // Implement the Frog's wio
-    private int frogWidth = 40;
-    private int frogHeight = 40;
+    int frogWidth = 40;
+    int frogHeight = 40;
 
-    private RenderedImage image = null;
+    public RenderedImage image = null;
     private String sprite;
 
     private Rectangle frog;
-
     /** 
      * Implement a constructor for the Frog class.
      * */
-    Frog() {
-        frog = new Rectangle(x, y, frogWidth, frogHeight);
-        switchSprite("src/Photos/frog.png");
+    Frog(int x, int y, int width, int height) {
+        this.frogX = x;
+        this.frogY = y;
+        this.frogWidth = width;
+        this.frogHeight = height;
+        
+        frog = new Rectangle(frogX, frogY, frogWidth, frogHeight);
+        switchSprite("resources/frog.png");
 
-        t.start();
-        addKeyListener(this);
+        //t.start();
+        //addKeyListener(this);
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
     }
     
+    /**
+     * Implement a method which initializez the Object's image.
+     * @param g paints the image on screen.
+     */
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 =  (Graphics2D) g;
-        //g2.fill(frog);
+        g2.drawImage((Image) image, this.frogX, this.frogY, null);
+    }
 
-        g2.drawImage((Image) image, this.x, this.y, null);
+    public Rectangle getBounds() {
+        return new Rectangle(frogX, frogY, frogWidth, frogHeight);
+    }
+
+    public void draw(Graphics g) {
+        g.drawImage((Image) image, frogX, frogY, frogWidth, frogHeight, null);
     }
 
     /**
@@ -66,59 +74,11 @@ public class Frog extends JPanel implements ActionListener, KeyListener {
         }
     }
 
-    /**
-     * Define a set of parameters to restrict the frog's movement.
-     */
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (x < 0) {
-            x = 0;
-        }
-
-        if (x > GameScreen.displayWidth - frogWidth + 1) {
-            x = GameScreen.displayWidth - frogWidth + 1;
-        }
-
-        if (y < 0) {
-            y = 0;
-        }
-
-        if (y > GameScreen.displayHeight - frogHeight + 1) {
-            y = GameScreen.displayHeight - frogHeight + 1;
-        }
-
-        repaint();
+    public int getCenterX() {
+        return frogX - 1 + frogWidth / 2;
     }
 
-    public void keyPressed(KeyEvent e) {
-        int theKey = e.getKeyCode();
-
-        if (theKey == KeyEvent.VK_UP) {
-            switchSprite("src/Photos/frog.png");
-            y -= GameScreen.GRID;
-            frog.setLocation(x, y);
-        }
-
-        if (theKey == KeyEvent.VK_DOWN) {
-            switchSprite("src/Photos/frog_front.png");
-            y += GameScreen.GRID;
-            frog.setLocation(x, y);
-        }
-
-        if (theKey == KeyEvent.VK_RIGHT) {
-            switchSprite("src/Photos/frog_right.png");
-            x += GameScreen.GRID;
-            frog.setLocation(x, y);
-        }
-
-        if (theKey == KeyEvent.VK_LEFT) {
-            switchSprite("src/Photos/frog_left.png");
-            x -= GameScreen.GRID;
-            frog.setLocation(x, y);
-        }
+    public int getCenterY() {
+        return frogY - 1 + frogHeight / 2;
     }
-
-    public void keyTyped(KeyEvent e) {}
-    
-    public void keyReleased(KeyEvent e) {}
 }
