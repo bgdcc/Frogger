@@ -15,7 +15,7 @@ public class Vehicle extends JPanel {
     // private String folderName;
     // private relativePosition;
 
-    int vehicleSpeed;
+    double vehicleSpeed;
 
     int vehicleWidth;
     int vehicleHeight;
@@ -56,6 +56,7 @@ public class Vehicle extends JPanel {
      * Move the vehicle on the screen.
      */
     public void move() {
+        // Move the vehicle across the screen
         if (x - 1 + vehicleWidth <= 0 && vehicleSpeed < 0) {
             switchSprite();
             x = GameScreen.DISPLAY_WIDTH + 1;
@@ -63,7 +64,7 @@ public class Vehicle extends JPanel {
             switchSprite();
             x = -vehicleWidth;
         }
-        x += vehicleSpeed;
+        x += vehicleSpeed;  // Move according to the current speed
         vehicle.setBounds(x, y, vehicleWidth, vehicleHeight);
     }
 

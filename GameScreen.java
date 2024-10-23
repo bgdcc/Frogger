@@ -109,6 +109,18 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         gameFrame.dispose(); // Close the game window
         new GUI();  // Reopen the main menu by creating a new instance
     }
+    public void setDifficulty(double multiplier) {
+        // Adjust the speed of all vehicles based on the multiplier
+        for (Car car : cars) {
+            car.vehicleSpeed = car.vehicleSpeed > 0 ? 10 * multiplier : -10 * multiplier;
+        }
+        for (Motorcycle motorcycle : motorcycles) {
+            motorcycle.vehicleSpeed = 15 * multiplier;
+        }
+        for (Truck truck : trucks) {
+            truck.vehicleSpeed = truck.vehicleSpeed > 0 ? 4 * multiplier : -4 * multiplier;
+        }
+    }
 
     /**
      * Implement a method which makes the frog move alongside the log when in contact.
@@ -123,6 +135,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
             }
         }
     }
+
 
     public boolean isInsideLog() {
         for (Log loggy: logs) {
