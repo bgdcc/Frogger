@@ -1,4 +1,4 @@
-**#[About the project]**
+**About the project**
 
 The project "Frogger" has been built with the help of the Java framework Swing, which helped us in configuring the backend of the project, and elements of the front-end.
 
@@ -26,16 +26,16 @@ When the player selects the Start option, the gameScreen is loaded, a new Thread
 
 To make the user's experience more entertaining, the game implements a score and a lifeCounter system. The first refers to player's advancement towards the end of the map, respectively a system which grants the player three lives.One the player either made contact with a vehicle or the water, a life is subtracted from the total amount, and the player spawns to the beggining of the map. Once the player loses three lives, a gameOver screen appears, announcing the final score for the session.
 
-##**How to run the program?**
+**How to run the program?**
 
 Once you gitclone or download the zipfile, the user must run the program from the GUI class (which contains the main method).
 
-##**What are the topics of choice specific to this project?**
+**What are the topics of choice specific to this project?**
 
 1. Version control - attained through the usage of Git and GitHub
 2. UI/UX design - attained through the implementation of classes and methods meant to enhance the user experience
 
-#**What were the references used?**
+**What were the references used?**
 
 The main source of inspiration for graphics and gameplay was the 80s arcade game "Frogger" which has a similar gameplay.
 The code itself was written with the help of multiple tutorials and online resources such as StackOverflow (and other online forums) and YouTube videos, as well as the information provided in the 2IP90 Programming class.
