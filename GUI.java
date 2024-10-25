@@ -21,8 +21,9 @@ public class GUI {
     private JPanel mainPanel;  // Main panel for CardLayout
     private CardLayout cardLayout;  // CardLayout to switch between screens
     private GameScreen gameScreen;  // Reference to GameScreen
-    private boolean soundEnabled = true;  // Sound is enabled by default
     private Clip clip;  // Clip to hold the sound file
+
+    static boolean soundEnabled;  // Sound is enabled by default
 
     /**
      * Define a constructor for the GUI class.
@@ -30,6 +31,7 @@ public class GUI {
     public GUI() {
         // Load the sound file
         loadSound();
+
         
         // Start playing the sound in a loop
         if (soundEnabled) {
