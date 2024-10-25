@@ -1,4 +1,4 @@
-#**About the project**
+#[**About the project**]
 
 The project "Frogger" has been built with the help of the Java framework Swing, which helped us in configuring the backend of the project, and elements of the front-end.
 
