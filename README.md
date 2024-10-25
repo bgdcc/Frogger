@@ -45,8 +45,10 @@ The map was made through the use of a pixel-art site.
 
 **Contributors:**
 Sebastian Georgescu (1926209)
+
 Bogdan Culea (2124904)
 
 **You can contact us at:**
 b.culea@student.tue.nl
+
 s.georgescu@student.tue.nl
