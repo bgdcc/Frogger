@@ -9,7 +9,7 @@ import javax.swing.*;
  * Define the GameScreen class.
  */
 public class GameScreen extends JPanel implements Runnable, KeyListener {
-    private Frog froggy; //Initialize the player object.
+    private Frog player; //Initialize the player object.
 
     // Initialize the object arrays.
     private Car[] cars = new Car[4];
@@ -77,7 +77,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
      * Initialize all the obstacles the frog/player will encounter.
      */
     public void setUpTheObjects() {
-        froggy = new Frog(initialX, initialY, 40, 40);
+        player = new Frog(initialX, initialY, 40, 40);
 
         cars[0] = new Car(1, 576, 1);
         cars[1] = new Car(201, 576, 1);
@@ -205,11 +205,11 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
      */
     public void checkForLogSpeed() {
         for (Log loggy: logs) {
-            if (froggy.getCenterY() >= loggy.getLogY()
-                && froggy.getCenterY() <= loggy.getMaxY()
-                && froggy.getCenterX() <= loggy.getMaxX()
-                && froggy.getCenterX() >= loggy.getLogX()) {
-                froggy.frogX += loggy.logSpeed;
+            if (player.getCenterY() >= loggy.getLogY()
+                && player.getCenterY() <= loggy.getMaxY()
+                && player.getCenterX() <= loggy.getMaxX()
+                && player.getCenterX() >= loggy.getLogX()) {
+                player.frogX += loggy.logSpeed;
             }
         }
     }
@@ -219,10 +219,10 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
      */
     public boolean isOnLog() {
         for (Log loggy: logs) {
-            if (froggy.getCenterY() >= loggy.getLogY()
-                && froggy.getCenterY() <= loggy.getMaxY()
-                && froggy.getCenterX() <= loggy.getMaxX()
-                && froggy.getCenterX() >= loggy.getLogX()) {
+            if (player.getCenterY() >= loggy.getLogY()
+                && player.getCenterY() <= loggy.getMaxY()
+                && player.getCenterX() <= loggy.getMaxX()
+                && player.getCenterX() >= loggy.getLogX()) {
                 return true;
             }
         }
@@ -234,12 +234,12 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
      * Implement a method which ends the player's current life if in contact with the water.
      */
     public void checkWaterContact() {
-        int frogMaxY = froggy.frogY + froggy.frogWidth - 1;
+        int frogMaxY = player.frogY + player.frogWidth - 1;
         // Modify if wrong with 51
         if (frogMaxY < 381
              && !isOnLog() && !isOnTurtle()
              && !isOnLilyPad()
-             && froggy.frogY % 60 == 21) {
+             && player.frogY % 60 == 21) {
 
             lifeCounter--;
 
@@ -256,13 +256,13 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
      */
     public void checkTurtleContact() {
         for (Turtle turt: turtles) {
-            if (froggy.getCenterY() >= turt.getTurtleY() 
-                && froggy.getCenterY() <= turt.getTurtleY() + turt.turtleHeight - 1
-                && froggy.getCenterX() >= turt.getTurtleX()
-                && froggy.getCenterX() <= turt.getTurtleX() + turt.turtleWidth - 1) {
+            if (player.getCenterY() >= turt.getTurtleY() 
+                && player.getCenterY() <= turt.getTurtleY() + turt.turtleHeight - 1
+                && player.getCenterX() >= turt.getTurtleX()
+                && player.getCenterX() <= turt.getTurtleX() + turt.turtleWidth - 1) {
             
                 if (turt.touchable) {
-                    froggy.frogX += turt.turtleSpeed;
+                    player.frogX += turt.turtleSpeed;
                 }
             }
         }
@@ -276,10 +276,10 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 
         for (Turtle turt: turtles) {
 
-            if (froggy.getCenterY() >= turt.getTurtleY() 
-                && froggy.getCenterY() <= turt.getTurtleY() + turt.turtleHeight - 1
-                && froggy.getCenterX() >= turt.getTurtleX()
-                && froggy.getCenterX() <= turt.getTurtleX() + turt.turtleWidth - 1
+            if (player.getCenterY() >= turt.getTurtleY() 
+                && player.getCenterY() <= turt.getTurtleY() + turt.turtleHeight - 1
+                && player.getCenterX() >= turt.getTurtleX()
+                && player.getCenterX() <= turt.getTurtleX() + turt.turtleWidth - 1
                 && turt.touchable) {
                 return true;
             }
@@ -293,14 +293,14 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
      * Win the game if the player wins 5 consecutive times.
      */
     public void checkLilypadContact() {
-        Rectangle frogBounds = froggy.getBounds();
+        Rectangle frogBounds = player.getBounds();
 
         for (Lilypad lily: lilypads) {
             Rectangle lilyBounds = lily.getLilypad();
 
             if (frogBounds.intersects(lilyBounds) 
                 && lily.isAvailable
-                && froggy.frogY % 60 == 21) {
+                && player.frogY % 60 == 21) {
 
                 gamesWon++;
                 lily.isAvailable = false;
@@ -320,14 +320,14 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
      * @return true if the player is on a lilypad.
      */
     public boolean isOnLilyPad() {
-        Rectangle frogBounds = froggy.getBounds();
+        Rectangle frogBounds = player.getBounds();
 
         for (Lilypad lily: lilypads) {
             Rectangle lilyBounds = lily.getLilypad();
 
             if (frogBounds.intersects(lilyBounds) 
                 && lily.isAvailable
-                && froggy.frogY % 60 == 21) {
+                && player.frogY % 60 == 21) {
                 
                 return true;
             }
@@ -360,7 +360,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
             lilypads[i].draw(g);
         }
 
-        froggy.draw(g);
+        player.draw(g);
 
         for (int i = 0; i < 4; i++) {
             trucks[i].draw(g);
@@ -420,18 +420,18 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
                 try {
                     // Move up.
                     if (theKey == KeyEvent.VK_UP) {
-                        froggy.switchSprite("resources/frog_sprites/frog.png");
-                        if (froggy.frogY - GRID >= 0) {
+                        player.switchSprite("resources/frog_sprites/frog.png");
+                        if (player.frogY - GRID >= 0) {
                             // Switch between sprites to denote movement.
-                            froggy.switchSprite("resources/frog_sprites/frog_jump.png");
-                            froggy.frogY -= GRID / 2;
+                            player.switchSprite("resources/frog_sprites/frog_jump.png");
+                            player.frogY -= GRID / 2;
                             Thread.sleep(48);
-                            froggy.frogY -= GRID / 2;
-                            froggy.switchSprite("resources/frog_sprites/frog.png");
+                            player.frogY -= GRID / 2;
+                            player.switchSprite("resources/frog_sprites/frog.png");
 
                             // Update score when moving forward.
-                            if (froggy.frogY < currentProgress) {
-                                currentProgress = froggy.frogY;
+                            if (player.frogY < currentProgress) {
+                                currentProgress = player.frogY;
                                 score += 10; 
                             }
                         }
@@ -439,37 +439,37 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 
                     // Move down.
                     if (theKey == KeyEvent.VK_DOWN) {
-                        froggy.switchSprite("resources/frog_sprites/frog_front.png");
-                        if (froggy.frogY + GRID <= DISPLAY_HEIGHT - froggy.frogHeight) {
-                            froggy.switchSprite("resources/frog_sprites/frog_front_jump.png");
-                            froggy.frogY += GRID / 2;
+                        player.switchSprite("resources/frog_sprites/frog_front.png");
+                        if (player.frogY + GRID <= DISPLAY_HEIGHT - player.frogHeight) {
+                            player.switchSprite("resources/frog_sprites/frog_front_jump.png");
+                            player.frogY += GRID / 2;
                             Thread.sleep(48);
-                            froggy.frogY += GRID / 2;
-                            froggy.switchSprite("resources/frog_sprites/frog_front.png");
+                            player.frogY += GRID / 2;
+                            player.switchSprite("resources/frog_sprites/frog_front.png");
                         }
                     }
 
                     // Move right.
                     if (theKey == KeyEvent.VK_RIGHT) {
-                        froggy.switchSprite("resources/frog_sprites/frog_right.png");
-                        if (froggy.frogX + GRID <= DISPLAY_WIDTH - froggy.frogWidth) {
-                            froggy.switchSprite("resources/frog_sprites/frog_right_jump.png");
-                            froggy.frogX += GRID / 2;
+                        player.switchSprite("resources/frog_sprites/frog_right.png");
+                        if (player.frogX + GRID <= DISPLAY_WIDTH - player.frogWidth) {
+                            player.switchSprite("resources/frog_sprites/frog_right_jump.png");
+                            player.frogX += GRID / 2;
                             Thread.sleep(48);
-                            froggy.frogX += GRID / 2;
-                            froggy.switchSprite("resources/frog_sprites/frog_right.png");
+                            player.frogX += GRID / 2;
+                            player.switchSprite("resources/frog_sprites/frog_right.png");
                         }
                     }
 
                     // Move left.
                     if (theKey == KeyEvent.VK_LEFT) {
-                        froggy.switchSprite("resources/frog_sprites/frog_left.png");
-                        if (froggy.frogX - GRID >= 0) {
-                            froggy.switchSprite("resources/frog_sprites/frog_left_jump.png");
-                            froggy.frogX -= GRID / 2;
+                        player.switchSprite("resources/frog_sprites/frog_left.png");
+                        if (player.frogX - GRID >= 0) {
+                            player.switchSprite("resources/frog_sprites/frog_left_jump.png");
+                            player.frogX -= GRID / 2;
                             Thread.sleep(48);
-                            froggy.switchSprite("resources/frog_sprites/frog_left.png");
-                            froggy.frogX -= GRID / 2;
+                            player.switchSprite("resources/frog_sprites/frog_left.png");
+                            player.frogX -= GRID / 2;
                         }
                     }
 
@@ -492,7 +492,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
      * 
      */
     public void checkCollision() {
-        Rectangle frogBounds = froggy.getBounds();
+        Rectangle frogBounds = player.getBounds();
 
         for (int i = 0; i < 4; i++) {
             if (frogBounds.intersects(trucks[i].getBounds())
@@ -512,8 +512,8 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
      * Reset the frog to its initial coordinates.
      */
     public void resetGame() {
-        froggy.frogX = initialX;
-        froggy.frogY = initialY;
+        player.frogX = initialX;
+        player.frogY = initialY;
 
         currentProgress = initialY;
 

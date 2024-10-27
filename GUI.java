@@ -15,7 +15,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 /**
@@ -25,44 +24,43 @@ import javax.swing.border.EmptyBorder;
 public class GUI {
 
     private JFrame frame;
-    private JPanel mainPanel;  // Main panel for CardLayout.
-    private CardLayout cardLayout;  // CardLayout to switch between screens.
+    private JPanel mainPanel; 
+    private CardLayout cardLayout; 
     private GameScreen gameScreen; 
-    private Clip clip;  // Clip to hold the sound file
+    private Clip clip; 
 
     JPanel aboutPanel = new JPanel(new BorderLayout());
 
-    static boolean soundEnabled = false;  // Sound is enabled by default
+    static boolean soundEnabled = true;  // Sound is enabled by default
 
     /**
      * Define a constructor for the GUI class.
      */
     public GUI() {
-        // Load the sound file
+        // Load the sound file.
         loadSound();
 
         
         // Start playing the sound in a loop.
         if (soundEnabled) {
-            clip.loop(Clip.LOOP_CONTINUOUSLY);  // Loop sound infinitely
+            clip.loop(Clip.LOOP_CONTINUOUSLY);  // Loop sound infinitely.
         }
 
-        // Create the main frame
         frame = new JFrame();
 
-        // Set up CardLayout for switching between panels
+        // Set up CardLayout for switching between panels.
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
 
-        // Initialize the game screen
-        gameScreen = new GameScreen(frame);  // Create GameScreen instance
+        // Initialize the game screen.
+        gameScreen = new GameScreen(frame);
 
-        // Add the main menu panel, about us panel, and settings panel
+        // Add the main menu panel, about us panel, and settings panel.
         mainPanel.add(createMainMenuPanel(), "Main Menu");
         mainPanel.add(createAboutUsPanel(), "About Us");
-        mainPanel.add(createSettingsPanel(), "Settings");  // Add the settings panel
+        mainPanel.add(createSettingsPanel(), "Settings"); 
 
-        // Add the main panel to the frame
+        // Add the main panel to the frame.
         frame.add(mainPanel, BorderLayout.CENTER);
 
         // Frame settings
@@ -92,9 +90,9 @@ public class GUI {
      */
     public void toggleSound() {
         if (soundEnabled) {
-            clip.loop(Clip.LOOP_CONTINUOUSLY);  // Loop sound infinitely
+            clip.loop(Clip.LOOP_CONTINUOUSLY);  // Loop sound infinitely.
         } else {
-            clip.stop();  // Stop the sound if disabled
+            clip.stop();  // Stop the sound if disabled.
         }
     }
 
@@ -112,19 +110,19 @@ public class GUI {
         JButton aboutButton = createButtonWithScaledIcon("/resources/AboutUs.png", 200);
         JButton settingsButton = createButtonWithScaledIcon("/resources/Settings.png", 200);
 
-        // Add ActionListener to "About Us" button to switch to the "About Us" screen
+        // Add ActionListener to "About Us" button to switch to the "About Us" screen.
         aboutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                cardLayout.show(mainPanel, "About Us");  // Switch to the About Us panel
+                cardLayout.show(mainPanel, "About Us");  // Switch to the About Us panel.
             }
         });
 
-        // Add ActionListener to "Settings" button to switch to the "Settings" screen
+        // Add ActionListener to "Settings" button to switch to the "Settings" screen.
         settingsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                cardLayout.show(mainPanel, "Settings");  // Switch to the Settings panel
+                cardLayout.show(mainPanel, "Settings");  // Switch to the Settings panel.
             }
         });
 
@@ -132,13 +130,13 @@ public class GUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFrame gameFrame = new JFrame();  // Create a new frame for the game
-                gameFrame.add(gameScreen);  // Add the existing gameScreen instance
+                gameFrame.add(gameScreen); 
                 gameFrame.setSize(800, 800);
                 gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 gameFrame.setVisible(true);
                 gameScreen.requestFocusInWindow();  // Request focus for key input
 
-                frame.dispose();  // Close the main menu frame (optional)
+                frame.dispose();
             }
         });
 
@@ -150,49 +148,46 @@ public class GUI {
         return panel;
     }
 
-    // Method to create the "About Us" panel
-   private JPanel createAboutUsPanel() {
-    // Create a panel for the About Us screen with BorderLayout
-    JPanel aboutPanel = new JPanel(new BorderLayout());
+   // Method to create the "About Us" panel.
+    private JPanel createAboutUsPanel() {
+        // Create a panel for the About Us screen with BorderLayout
+        JPanel aboutPanel = new JPanel(new BorderLayout());
 
-    // Create a panel to hold the text (optional, for better layout control)
-    JPanel textPanel = new JPanel();
-    textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
+        // Create a panel to hold the text (optional, for better layout control)
+        JPanel textPanel = new JPanel();
+        textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
 
-    // Add two lines of text using JLabels
-    JLabel line1 = new JLabel("The project \"Frogger\" has been built with the help of the Java framework Swing.");
-    JLabel line2 = new JLabel("In order to win, the player must get to the other side of the map 5 consecutive times in a single game session.");
-    JLabel line3 = new JLabel("If the player either gets hit by a Vehicle or jumps in water 3 times, they will lose the game.");
+        // Add lines of text using JLabels
+        JLabel line1 = new JLabel("The project \"Frogger\" has been built with the help of the Java framework Swing.");
+        JLabel line2 = new JLabel("In order to win, the player must get to the other side of the map 5 consecutive times in a single game session.");
+        JLabel line3 = new JLabel("If the player either gets hit by a Vehicle or jumps in water 3 times, they will lose the game.");
+        JLabel line4 = new JLabel(" ");
+        JLabel line5 = new JLabel("In order to control the frog, the user must use the arrow keys from the keyboard.");
 
-    JLabel line4 = new JLabel("In order to control the frog, the user must use the arrow keys from the keyboard.");
+        // Add the labels to the textPanel
+        textPanel.add(line1);
+        textPanel.add(line2);
+        textPanel.add(line3);
+        textPanel.add(line4);
+        textPanel.add(line5);
 
-    // Center-align the text labels and adjust their font or color if needed
-    line1.setHorizontalAlignment(SwingConstants.CENTER);
-    line2.setHorizontalAlignment(SwingConstants.CENTER);
+        // Add the textPanel to the center of the aboutPanel
+        aboutPanel.add(textPanel, BorderLayout.CENTER);
 
-    // Add the labels to the textPanel
-    textPanel.add(line1);
-    textPanel.add(line2);
-    textPanel.add(line3);
-    textPanel.add(line4);
+        // Create and add the back button at the bottom of the aboutPanel.
+        JButton backButton = new JButton("Back to Main Menu");
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(mainPanel, "Main Menu");  // Switch back to the main menu panel
+            }
+        });
+        aboutPanel.add(backButton, BorderLayout.SOUTH);
 
-    // Add the textPanel to the center of the aboutPanel
-    aboutPanel.add(textPanel, BorderLayout.CENTER);
-
-    // Create and add the back button at the bottom of the aboutPanel
-    JButton backButton = new JButton("Back to Main Menu");
-    backButton.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            cardLayout.show(mainPanel, "Main Menu");  // Switch back to the main menu panel
-        }
-    });
-    aboutPanel.add(backButton, BorderLayout.SOUTH);
-
-    return aboutPanel;
+        return aboutPanel;
 }
 
-    // Method to create the "Settings" panel
+    // Method to create the "Settings" panel.
     private JPanel createSettingsPanel() {
         JPanel settingsPanel = new JPanel(new GridLayout(5, 1));
 
@@ -255,7 +250,7 @@ public class GUI {
         return settingsPanel;
     }
 
-    // Utility method to create a button with a scaled icon
+    // Utility method to create a button with a scaled icon.
     private JButton createButtonWithScaledIcon(String imagePath, int targetWidth) {
         ImageIcon originalIcon = new ImageIcon(getClass().getResource(imagePath));
 
