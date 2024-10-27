@@ -1,5 +1,7 @@
 **About the project**
 
+link to repository: https://github.com/bgdcc/Frogger/tree/final-version
+
 The project "Frogger" has been built with the help of the Java framework Swing, which helped us in configuring the backend of the project, and elements of the front-end.
 
 The game is simple. The player must guide the frog to the other side of the map without colliding with other objects.
