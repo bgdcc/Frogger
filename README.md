@@ -23,6 +23,7 @@ When the player selects the Start option, the gameScreen is loaded, a new Thread
 3. **Log** - Once the player successfully passes the highway area of the screen, they will have to come in contact with the logs, an object which will help them pass the river. The frog will be able to safely stand on the logs, thus getting the same horizontal speed as the logs do. By moving from a log to another, the player will successfully pass the river portion, thus winning the current game.
 4. **Turtle** - Similarly to the logs, the Turtles will help the player in traversing the river portion of the level.
    4.1. **DrowningTurtle** - Unlike the super-class, the Drowning Turtle implements an individual thread which will determine it in switching sprites every few seconds. Once the Drowning Turtle "goes underwater", the player will not be able to stay on it.
+5. Lilypad - In order for the player to win, they must land on a Lilypad 5 times in the same game session.
 
 To make the user's experience more entertaining, the game implements a score and a lifeCounter system. The first refers to player's advancement towards the end of the map, respectively a system which grants the player three lives.One the player either made contact with a vehicle or the water, a life is subtracted from the total amount, and the player spawns to the beggining of the map. Once the player loses three lives, a gameOver screen appears, announcing the final score for the session.
 
@@ -44,11 +45,13 @@ The graphics for the buttons was made through the help of Canva.
 The map was made through the use of a pixel-art site.
 
 **Contributors:**
+
 Sebastian Georgescu (1926209)
 
 Bogdan Culea (2124904)
 
 **You can contact us at:**
+
 b.culea@student.tue.nl
 
 s.georgescu@student.tue.nl
