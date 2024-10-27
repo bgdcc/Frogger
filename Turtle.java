@@ -1,12 +1,16 @@
-import java.awt.event.*;
-import java.awt.image.*;
-import java.util.Random;
 import java.awt.*;
+import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+/**
+ * Define the Turtle class.
+ * 
+ * Similar to the Log class, if the player comes in contact with a Turtle, 
+ * they will move alongside it.
+ */
 public class Turtle extends JPanel {
     private int x;
     private int y;
@@ -26,6 +30,12 @@ public class Turtle extends JPanel {
 
     private Rectangle turtle;
 
+    /**
+     * Define a constructor for the Turtle class.
+     * @param x is the x-coordinate.
+     * @param y is the y-coordinate.
+     * @param direction is the direction of the Turtle.
+     */
     Turtle(int x, int y, int direction) {
         this.x = x;
         this.y = y;
@@ -49,13 +59,19 @@ public class Turtle extends JPanel {
         setFocusTraversalKeysEnabled(false);
     }
 
-    
-
+    /**
+     * Draw the Turtle.
+     * @param g is a Swing specific class which helps in drawing the object.
+     */
     public void draw(Graphics g) {
         g.drawImage((Image) image, x, y, turtleWidth, turtleHeight, null);
 
     }
 
+    /**
+     * Draw the Turtle using a Swing specific method.
+     * @param g is a Swing specific class which helps in drawing the object.
+     */
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
@@ -63,6 +79,9 @@ public class Turtle extends JPanel {
         g2.drawImage((Image) image, this.x, this.y, null);
     }
 
+    /**
+     * Move the Turtle on the map.
+     */
     public void move() {
         if (x > GameScreen.DISPLAY_WIDTH && turtleSpeed > 0) {
             switchSprite("resources/vector_turtle.png");
@@ -95,11 +114,13 @@ public class Turtle extends JPanel {
         return turtle;
     }
 
+    /**
+     * Switch between sprites.
+     * @param sprite is the name of the image.
+     */
     public void switchSprite(String sprite) {
         try {
-            //File intialFile = new File(sprite);
             image = ImageIO.read(new File(sprite));
-            //ImageIO.write(image, "png", new File(sprite));
         } catch (IOException e1) {
             e1.printStackTrace();
         }

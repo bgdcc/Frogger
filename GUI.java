@@ -5,25 +5,34 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import javax.sound.sampled.*;
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-import java.io.File;
-import java.io.IOException;
 
+/**
+ * The main class of the program.
+ * Loads up the initial JFrame containing the menu.
+ */
 public class GUI {
 
     private JFrame frame;
-    private JPanel mainPanel;  // Main panel for CardLayout
-    private CardLayout cardLayout;  // CardLayout to switch between screens
-    private GameScreen gameScreen;  // Reference to GameScreen
+    private JPanel mainPanel;  // Main panel for CardLayout.
+    private CardLayout cardLayout;  // CardLayout to switch between screens.
+    private GameScreen gameScreen; 
     private Clip clip;  // Clip to hold the sound file
 
-    static boolean soundEnabled;  // Sound is enabled by default
+    JPanel aboutPanel = new JPanel(new BorderLayout());
+
+    static boolean soundEnabled = false;  // Sound is enabled by default
 
     /**
      * Define a constructor for the GUI class.
@@ -33,7 +42,7 @@ public class GUI {
         loadSound();
 
         
-        // Start playing the sound in a loop
+        // Start playing the sound in a loop.
         if (soundEnabled) {
             clip.loop(Clip.LOOP_CONTINUOUSLY);  // Loop sound infinitely
         }
@@ -65,7 +74,9 @@ public class GUI {
         frame.setResizable(false);
     }
 
-    // Method to load the sound file
+    /**
+     * Load the audiofile.
+     */
     public void loadSound() {
         try {
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("resources/sound.wav"));
@@ -76,7 +87,9 @@ public class GUI {
         }
     }
 
-    // Method to toggle sound on and off
+    /**
+     * Turn sound on and off.
+     */
     public void toggleSound() {
         if (soundEnabled) {
             clip.loop(Clip.LOOP_CONTINUOUSLY);  // Loop sound infinitely
@@ -87,14 +100,14 @@ public class GUI {
 
     // Method to create the main menu panel
     private JPanel createMainMenuPanel() {
-        // Custom panel with background image
+        // Custom panel with background image.
         BackgroundPanel panel = new BackgroundPanel(new ImageIcon(getClass().getResource("/resources/background.jpg")).getImage());
 
-        // Set panel's border and layout with reduced vertical gap between buttons
+        // Set panel's border and layout.
         panel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         panel.setLayout(new GridLayout(0, 1, 0, 5));  // 5px vertical gap between buttons
 
-        // Load and scale images for buttons
+        // Load and scale images for buttons.
         JButton startButton = createButtonWithScaledIcon("/resources/Start.png", 200);
         JButton aboutButton = createButtonWithScaledIcon("/resources/AboutUs.png", 200);
         JButton settingsButton = createButtonWithScaledIcon("/resources/Settings.png", 200);
@@ -138,55 +151,77 @@ public class GUI {
     }
 
     // Method to create the "About Us" panel
-    private JPanel createAboutUsPanel() {
-        // Create a panel for the About Us screen
-        JPanel aboutPanel = new JPanel(new BorderLayout());
+   private JPanel createAboutUsPanel() {
+    // Create a panel for the About Us screen with BorderLayout
+    JPanel aboutPanel = new JPanel(new BorderLayout());
 
-        // Add content to the About Us panel
-        JButton backButton = new JButton("Back to Main Menu");
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cardLayout.show(mainPanel, "Main Menu");  // Switch back to the main menu panel
-            }
-        });
+    // Create a panel to hold the text (optional, for better layout control)
+    JPanel textPanel = new JPanel();
+    textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
 
-        aboutPanel.add(backButton, BorderLayout.SOUTH);  // Add the back button at the bottom
-        aboutPanel.add(new JButton("This is the About Us screen!"), BorderLayout.CENTER);  // Replace with actual info
+    // Add two lines of text using JLabels
+    JLabel line1 = new JLabel("The project \"Frogger\" has been built with the help of the Java framework Swing.");
+    JLabel line2 = new JLabel("In order to win, the player must get to the other side of the map 5 consecutive times in a single game session.");
+    JLabel line3 = new JLabel("If the player either gets hit by a Vehicle or jumps in water 3 times, they will lose the game.");
 
-        return aboutPanel;
-    }
+    JLabel line4 = new JLabel("In order to control the frog, the user must use the arrow keys from the keyboard.");
+
+    // Center-align the text labels and adjust their font or color if needed
+    line1.setHorizontalAlignment(SwingConstants.CENTER);
+    line2.setHorizontalAlignment(SwingConstants.CENTER);
+
+    // Add the labels to the textPanel
+    textPanel.add(line1);
+    textPanel.add(line2);
+    textPanel.add(line3);
+    textPanel.add(line4);
+
+    // Add the textPanel to the center of the aboutPanel
+    aboutPanel.add(textPanel, BorderLayout.CENTER);
+
+    // Create and add the back button at the bottom of the aboutPanel
+    JButton backButton = new JButton("Back to Main Menu");
+    backButton.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            cardLayout.show(mainPanel, "Main Menu");  // Switch back to the main menu panel
+        }
+    });
+    aboutPanel.add(backButton, BorderLayout.SOUTH);
+
+    return aboutPanel;
+}
 
     // Method to create the "Settings" panel
     private JPanel createSettingsPanel() {
-        JPanel settingsPanel = new JPanel(new GridLayout(5, 1));  // Adjust grid layout to fit the sound button
+        JPanel settingsPanel = new JPanel(new GridLayout(5, 1));
 
-        // Difficulty buttons (already implemented)
+        // Set-up the difficulty buttons.
         JButton easyButton = new JButton("Easy");
         JButton mediumButton = new JButton("Medium");
         JButton hardButton = new JButton("Hard");
 
-        // Add ActionListener for easy difficulty
+        // Add ActionListener for easy difficulty.
         easyButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                gameScreen.setDifficulty(1.0);  // Easy: Multiply speed by 1
+                gameScreen.setDifficulty(1.0);
             }
         });
 
-        // Add ActionListener for medium difficulty
+        // Add ActionListener for medium difficulty.
         mediumButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                gameScreen.setDifficulty(1.5);  // Medium: Multiply speed by 1.5
+                gameScreen.setDifficulty(1.5);
             }
         });
 
-        // Add ActionListener for hard difficulty
+        // Add ActionListener for hard difficulty.
         hardButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                gameScreen.setDifficulty(2.0);  // Hard: Multiply speed by 2
+                gameScreen.setDifficulty(2.0);
             }
         });
 
@@ -196,7 +231,7 @@ public class GUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 soundEnabled = !soundEnabled;  // Toggle sound
-                soundButton.setText(soundEnabled ? "Sound On" : "Sound Off");  // Update button label
+                soundButton.setText(soundEnabled ? "Sound On" : "Sound Off");
                 toggleSound();  // Enable or disable sound
             }
         });
@@ -206,16 +241,16 @@ public class GUI {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                cardLayout.show(mainPanel, "Main Menu");  // Switch back to the main menu panel
+                cardLayout.show(mainPanel, "Main Menu");  // Switch back to the main menu panel.
             }
         });
 
-        // Add buttons to the settings panel
+        // Add buttons to the settings panel.
         settingsPanel.add(easyButton);
         settingsPanel.add(mediumButton);
         settingsPanel.add(hardButton);
-        settingsPanel.add(soundButton);  // Add the sound button to the settings panel
-        settingsPanel.add(backButton);  // Add the back button at the bottom
+        settingsPanel.add(soundButton);  // Add the sound button to the settings panel.
+        settingsPanel.add(backButton);  // Add the back button at the bottom.
 
         return settingsPanel;
     }
@@ -230,23 +265,23 @@ public class GUI {
 
         // Remove the button text
         button.setText("");
-        button.setBorderPainted(false);  // Remove button border for a cleaner look
-        button.setFocusPainted(false);   // Remove focus border
-        button.setContentAreaFilled(false);  // Make sure only the icon is displayed without background color
+        button.setBorderPainted(false);  // Remove button border for a cleaner look.
+        button.setFocusPainted(false);   // Remove focus border.
+        button.setContentAreaFilled(false); 
 
-        // Reduce button margin to minimize the space between buttons
-        button.setBorder(new EmptyBorder(5, 5, 5, 5));  // Adjust the padding inside the button as needed
+        // Reduce button margin to minimize the space between buttons.
+        button.setBorder(new EmptyBorder(5, 5, 5, 5)); 
 
         return button;
     }
 
     public static void main(String[] args) {
-        // Run the GUI
+        // Run the program.
         new GUI();
     }
 }
 
-// Custom JPanel class to paint background
+// Custom JPanel class to paint background.
 class BackgroundPanel extends JPanel {
     private Image backgroundImage;
 
@@ -255,7 +290,7 @@ class BackgroundPanel extends JPanel {
         this.backgroundImage = backgroundImage;
     }
 
-    // Override paintComponent to draw the background
+    // Override paintComponent to draw the background.
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

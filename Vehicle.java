@@ -1,19 +1,23 @@
 import java.awt.*;
-import java.awt.image.*;
+import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Random;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+/**
+ * Define the Vehicle super-class.
+ */
 public class Vehicle extends JPanel {
     Random rand = new Random();
 
     private int x = 0;
     private int y = 400;
 
-    // private String folderName;
-    // private relativePosition;
+    // ArrayList<String> options = new ArrayList<>();
+    String folderName;
+    String vehicleType;
 
     double vehicleSpeed;
 
@@ -21,19 +25,19 @@ public class Vehicle extends JPanel {
     int vehicleHeight;
 
     private RenderedImage image = null;
-    private String sprite;
     private Rectangle vehicle;
 
     /** 
      * Implement a constructor for the Vehicle class.
+     * @param x is the x-coordinate.
+     * @param y is the y-coordinate.
+     * @param direction is the direction of the Vehicle.
     */
     Vehicle(int x, int y, int direction) {
         this.x = x;
         this.y = y;
         vehicle = new Rectangle(x, y, vehicleWidth, vehicleHeight);
-
-        switchSprite();
-
+        
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
     }
@@ -56,7 +60,7 @@ public class Vehicle extends JPanel {
      * Move the vehicle on the screen.
      */
     public void move() {
-        // Move the vehicle across the screen
+        // Move the vehicle across the screen.
         if (x - 1 + vehicleWidth <= 0 && vehicleSpeed < 0) {
             switchSprite();
             x = GameScreen.DISPLAY_WIDTH + 1;
@@ -77,12 +81,14 @@ public class Vehicle extends JPanel {
      * Initialize a method to switch between sprites.
      */
     public void switchSprite() {
-        // this.sprite = sprite;
-
-        String[] colors = {"red", "blue", "yellow", "orange"};
         int colorIndex = rand.nextInt(4);
+        String[] options = {"option1", "option2", "option3", "option4"};
+        
         try {
-            image = ImageIO.read(new File("resources/" + colors[colorIndex] + "_car.png"));
+            String desiredSprite = "resources/" + this.folderName + "/" 
+                                 + options[colorIndex] + ".png";
+
+            image = ImageIO.read(new File(desiredSprite));
         } catch (IOException e1) {
             e1.printStackTrace();
         }

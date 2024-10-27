@@ -1,6 +1,5 @@
 import java.awt.*;
-import java.awt.event.*;
-import java.awt.image.*;
+import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
@@ -9,22 +8,23 @@ import javax.swing.*;
 /**
  * Implement the Frog class.
  */
-
 public class Frog extends JPanel {
     // Implement the original coordinates of the frog/player.
     int frogX = GameScreen.DISPLAY_WIDTH / 2 + 1;
     int frogY = GameScreen.DISPLAY_HEIGHT - 120;
     
-    // Implement the Frog's wio
+    // Implement the Frog's width and height.
     int frogWidth = 40;
     int frogHeight = 40;
 
     public RenderedImage image = null;
-    private String sprite;
 
-    private Rectangle frog;
     /** 
      * Implement a constructor for the Frog class.
+     * @param x is the x-coordinate.
+     * @param y is the y-coordinate.
+     * @param width is the width of the frog.
+     * @param height is the height of the frog.
      * */
     Frog(int x, int y, int width, int height) {
         this.frogX = x;
@@ -32,11 +32,7 @@ public class Frog extends JPanel {
         this.frogWidth = width;
         this.frogHeight = height;
         
-        frog = new Rectangle(frogX, frogY, frogWidth, frogHeight);
-        switchSprite("resources/frog.png");
-
-        //t.start();
-        //addKeyListener(this);
+        switchSprite("resources/frog_sprites/frog.png");
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
     }
@@ -64,11 +60,8 @@ public class Frog extends JPanel {
      * @param sprite represents the name of the image the sprite is  obtained from.
      */
     public void switchSprite(String sprite) {
-        this.sprite = sprite;
         try {
-            //File intialFile = new File(sprite);
             image = ImageIO.read(new File(sprite));
-            //ImageIO.write(image, "png", new File(sprite));
         } catch (IOException e1) {
             e1.printStackTrace();
         }
